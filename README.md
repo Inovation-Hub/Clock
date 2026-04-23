@@ -5,6 +5,7 @@ Aplicação desktop em Java/Swing para registrar e contabilizar horas trabalhada
 [![Download](https://img.shields.io/badge/Download-clock--1.1.jar-blue?style=for-the-badge&logo=java)](https://github.com/Inovation-Hub/Clock/releases/download/version_1.1/clock-1.1.jar)
 
 ![Clock Application](screen.png)
+![Clock Report](report.png)
 
 ---
 
