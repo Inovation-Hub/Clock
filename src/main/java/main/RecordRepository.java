@@ -87,6 +87,33 @@ public class RecordRepository {
         }
     }
 
+    public void saveAll(List<TimeRecord> records) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            Document doc = factory.newDocumentBuilder().newDocument();
+            Element root = doc.createElement(ROOT_TAG);
+            doc.appendChild(root);
+
+            for (TimeRecord record : records) {
+                Element entry = doc.createElement(ENTRY_TAG);
+                addChild(doc, entry, "timestamp",    record.timestamp);
+                addChild(doc, entry, "duration",     record.duration);
+                addChild(doc, entry, "totalSeconds", String.valueOf(record.totalSeconds));
+                addChild(doc, entry, "description",  record.description);
+                root.appendChild(entry);
+            }
+
+            Transformer tf = TransformerFactory.newInstance().newTransformer();
+            tf.setOutputProperty(OutputKeys.INDENT, "yes");
+            tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            tf.transform(new DOMSource(doc), new StreamResult(file));
+        } catch (Exception e) {
+            System.err.println("Erro ao salvar registros: " + e.getMessage());
+        }
+    }
+
     private static String text(Element el, String tag) {
         NodeList nl = el.getElementsByTagName(tag);
         return nl.getLength() > 0 ? nl.item(0).getTextContent() : "";
